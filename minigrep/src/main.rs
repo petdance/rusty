@@ -2,6 +2,8 @@
 
 use std::process;
 use std::env;
+use std::fs;
+use std::error::Error;
 
 struct Config {
     query: String,
@@ -28,4 +30,17 @@ fn main() {
         println!("Problem parsing arguments: {}", err);
         process::exit(1);
     });
+
+    if let Err(e) = run(config) {
+        println!("App error {}", e);
+        process::exit(1);
+    }
+}
+
+fn run(config: Config) -> Result<(), Box<dyn Error>> {
+    let contents = fs::read_to_string(config.filename)?;
+
+    println!("With text:\n{}", contents);
+
+    return Ok(())
 }
