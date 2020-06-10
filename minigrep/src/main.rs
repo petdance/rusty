@@ -2,25 +2,8 @@
 
 use std::process;
 use std::env;
-use std::fs;
-use std::error::Error;
 
-struct Config {
-    query: String,
-    filename: String,
-}
-
-impl Config {
-    fn new(args: &[String]) -> Result<Config, &'static str> {
-        if args.len() < 3 {
-            return Err("Not enough args");
-        }
-        let query = args[1].clone();
-        let filename = args[2].clone();
-
-        return Ok(Config { query, filename });
-    }
-}
+use minigrep::Config;
 
 
 fn main() {
@@ -31,16 +14,8 @@ fn main() {
         process::exit(1);
     });
 
-    if let Err(e) = run(config) {
+    if let Err(e) = minigrep::run(config) {
         println!("App error {}", e);
         process::exit(1);
     }
-}
-
-fn run(config: Config) -> Result<(), Box<dyn Error>> {
-    let contents = fs::read_to_string(config.filename)?;
-
-    println!("With text:\n{}", contents);
-
-    return Ok(())
 }
