@@ -32,7 +32,7 @@ impl fmt::Debug for Hit<'_> {
 
 
 fn main() -> io::Result<()> {
-    let filename = "Cargo.lock".to_string();
+    let filename = "Cargo.toml".to_string();
 
     let f = match File::open(&filename) {
         Ok(v) => v,
@@ -41,18 +41,22 @@ fn main() -> io::Result<()> {
 
     let f = BufReader::new(f);
 
-    //let mut results = Vec::new();
-    let query = "aut".to_string();
+    let mut results = Vec::<Hit>::new();
+    let query = "re".to_string();
     let mut lineno = 0;
     for line in f.lines() {
         lineno = lineno + 1;
-        let x = line.unwrap();
-        println!("{}: {:?}", lineno, x);
-        if x.contains(&query) {
+        if line.unwrap().contains(&query) {
             let hit = Hit { lineno: lineno, filename: &filename };
             println!("HIT {:#?}", hit);
             println!("HIT {}", hit);
+            results.push(hit)
         }
+    }
+    println!("Here are the results");
+    println!("{:?}", results);
+    for res in results {
+        println!("{:?}", res);
     }
 
     Ok(())
