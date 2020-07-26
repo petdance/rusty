@@ -14,19 +14,20 @@ use std::fs::File;
 pub struct Hit<'a> {
     lineno: usize,
     filename: &'a str,
+    line: String,
 }
 
 
 impl fmt::Display for Hit<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "LINE {}", self.lineno)
+        write!(f, "FILE {} LINE {}: {}", self.filename, self.lineno, self.line)
     }
 }
 
 
 impl fmt::Debug for Hit<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "DEBUG LINE {}", self.lineno)
+        write!(f, "DEBUG FILE {} LINE {}: {}", self.filename, self.lineno, self.line)
     }
 }
 
@@ -46,10 +47,9 @@ fn main() -> io::Result<()> {
     let mut lineno = 0;
     for line in f.lines() {
         lineno = lineno + 1;
-        if line.unwrap().contains(&query) {
-            let hit = Hit { lineno: lineno, filename: &filename };
-            println!("HIT {:#?}", hit);
-            println!("HIT {}", hit);
+        let x = line.unwrap();
+        if x.contains(&query) {
+            let hit = Hit { lineno: lineno, filename: &filename, line: x };
             results.push(hit)
         }
     }
