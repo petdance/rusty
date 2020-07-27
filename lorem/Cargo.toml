@@ -1,5 +1,5 @@
 [package]
-name = "curs1"
+name = "lorem"
 version = "0.1.0"
 authors = ["Andy Lester <andy@petdance.com>"]
 edition = "2018"
@@ -8,4 +8,3 @@ edition = "2018"
 
 [dependencies]
 cursive = "0.15"
-
